@@ -44,11 +44,19 @@ String uid;
 // Variables to save database paths
 String databasePath;
 String disPath;
+String reservePath;
+
+// LEDs
+
+int ledRed = 26;
+int ledGreen = 25;
+int ledBlue = 27;
+int db_distValue;
 
 // Ultrasonic sensor
 
-int TRIG_PIN = 12; // trigger pin
-int ECHO_PIN = 13; // echo pin
+int TRIG_PIN = 13; // trigger pin
+int ECHO_PIN = 12; // echo pin
 long duration;
 int distance;
 
@@ -93,6 +101,9 @@ void setup(){
    
    pinMode(TRIG_PIN, OUTPUT);
    pinMode(ECHO_PIN, INPUT);
+   pinMode(ledRed, OUTPUT);
+   pinMode(ledBlue, OUTPUT);
+   pinMode(ledGreen, OUTPUT);
   
   // Assign the api key (required)
   config.api_key = API_KEY;
@@ -132,6 +143,7 @@ void setup(){
 
   // Update database path for sensor readings
   disPath = databasePath + "/distance"; // --> UsersData/<user_uid>/distance
+  reservePath = databasePath + "/reservation_form"; // --> UsersData/<user_uid>/reservation_form
 }
 
 void loop(){
@@ -154,4 +166,30 @@ void loop(){
     // Send readings to database:
     sendInt(disPath, distance);
   }
+  
+  // Read the current database readings;
+    if (Firebase.RTDB.getInt(&fbdo, disPath)) {
+      if (fbdo.dataType() == "int") {
+        db_distValue = fbdo.intData();
+    }
+  }
+  if (db_distValue < 9) {
+    digitalWrite(ledRed, HIGH);
+    digitalWrite(ledGreen, LOW);
+    digitalWrite(ledBlue, LOW);
+    }
+    
+   else if (Firebase.RTDB.getJSON(&fbdo, reservePath) && (db_distValue >= 9)) {
+  if (fbdo.dataType() == "json") {
+    digitalWrite(ledBlue, HIGH);
+    digitalWrite(ledGreen, LOW);
+    digitalWrite(ledRed, LOW);
+    }
+   }
+    
+    else {
+    digitalWrite(ledRed, LOW);
+    digitalWrite(ledGreen, HIGH);
+    digitalWrite(ledBlue, LOW);
+      }
 }
