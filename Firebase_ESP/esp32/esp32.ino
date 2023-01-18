@@ -165,31 +165,31 @@ void loop(){
 
     // Send readings to database:
     sendInt(disPath, distance);
-  }
   
-  // Read the current database readings;
+    // Read the current database readings;
     if (Firebase.RTDB.getInt(&fbdo, disPath)) {
       if (fbdo.dataType() == "int") {
         db_distValue = fbdo.intData();
     }
   }
-  if (db_distValue < 9) {
-    digitalWrite(ledRed, HIGH);
-    digitalWrite(ledGreen, LOW);
-    digitalWrite(ledBlue, LOW);
-    }
-    
-   else if (Firebase.RTDB.getJSON(&fbdo, reservePath) && (db_distValue >= 9)) {
-  if (fbdo.dataType() == "json") {
-    digitalWrite(ledBlue, HIGH);
-    digitalWrite(ledGreen, LOW);
-    digitalWrite(ledRed, LOW);
+  if (Firebase.RTDB.getJSON(&fbdo, reservePath) && (db_distValue >= 9)) {
+    if (fbdo.dataType() == "json") {
+      digitalWrite(ledBlue, HIGH);
+      digitalWrite(ledGreen, LOW);
+      digitalWrite(ledRed, LOW);
     }
    }
+   else if (db_distValue < 9) {
+      digitalWrite(ledBlue, LOW);
+      digitalWrite(ledGreen, LOW);
+      digitalWrite(ledRed, HIGH);
+      Firebase.RTDB.deleteNode(&fbdo, reservePath);
+    }
     
     else {
     digitalWrite(ledRed, LOW);
     digitalWrite(ledGreen, HIGH);
     digitalWrite(ledBlue, LOW);
       }
+  }
 }
