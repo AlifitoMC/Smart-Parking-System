@@ -32,7 +32,7 @@
       // Make auth and database references
       const auth = firebase.auth();
       const db = firebase.database();
-
+      
     </script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     <link rel="icon" type="image/png" href="favicon.png">
@@ -68,6 +68,15 @@
     </div>
   </form>
 
+  <!--CONTENT (OVERLAY) -->
+<div id="overlay">
+  <div id="text">You have already made a reservation, would you like to cancel?</div>
+  <div id="lower">
+    <button type="button" class="buttoncancel button5" id="yesButton">Yes</button>
+    <button type="button" class="buttoncancel button5" id="noButton">No</button>
+  </div>
+</div>
+
   <!--CONTENT (SUBMISSION FORM)-->
   <div class="content-sign-in" id="content-sign-in" style="display: none;"><br>
 
@@ -80,7 +89,7 @@
         <!--CONTENT (PARKING SPACE STATUS)-->
         <div class="mb-3">
           <input type="radio" class="btn-check" name="options-1a" id="options-1a" autocomplete="off">
-          <label class="btn btn-success btn-lg" for="options-1a" data-bs-toggle="button">1A</label>
+          <label class="btn btn-success btn-lg" for="options-1a" data-bs-toggle="button" id="buttonStyle">1A</label>
         </div>
 
         <!--CONTENT (DROP DOWN MENU)-->

@@ -60,9 +60,9 @@ int ECHO_PIN = 12; // echo pin
 long duration;
 int distance;
 
-// Timer variables (send new readings every three minutes)
+// Timer variables (send new readings every minute)
 unsigned long sendDataPrevMillis = 0;
-unsigned long timerDelay = 600;
+unsigned long timerDelay = 1000;
 
 
 

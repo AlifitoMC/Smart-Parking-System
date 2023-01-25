@@ -2,6 +2,11 @@ const loginElement = document.querySelector('#login-form');
 const contentElement = document.querySelector("#content-sign-in");
 const userDetailsElement = document.querySelector('#user-details');
 const authBarElement = document.querySelector("#authentication-bar");
+var button = document.getElementById("buttonStyle");
+var drop = document.getElementById("Space");
+var overlay = document.querySelector('#overlay');
+var yesButton = document.querySelector('#yesButton');
+var noButton = document.querySelector('#noButton');
 
 
 // MANAGE LOGIN/LOGOUT UI
@@ -75,7 +80,43 @@ const setupUI = (user) => {
       });
     };
 
-  // if user is logged out
+    dbRefDist.on("value",function(snapshot) {
+      var dist = snapshot.val();
+    
+    if (dist < 9) {
+      button.classList.remove("btn-success");
+      button.classList.remove("btn-primary");
+      button.classList.add("btn-danger")
+      drop.options[1].style.display="none";
+      document.getElementById("overlay").style.display = "none";
+    } else {
+      button.classList.remove("btn-danger");
+      button.classList.remove("btn-primary");
+      button.classList.add("btn-success");
+      drop.options[1].style.display="block";
+    }
+    });
+
+    dbRefReservationForm.on("value", function(snapshot) {
+      var value = snapshot.val();
+      
+      if (value) {
+        button.classList.remove("btn-success");
+        button.classList.add("btn-primary");
+        drop.options[1].style.display="none";
+        document.getElementById("overlay").style.display = "block";
+      } else{
+        button.classList.remove("btn-primary");
+        button.classList.add("btn-success");
+        drop.options[1].style.display="block";
+      }
+    });
+
+    yesButton.addEventListener('click', () => overlay.style.display = 'none');
+    yesButton.addEventListener('click', () => dbRefReservationForm.remove());
+    noButton.addEventListener('click', () => overlay.style.display = 'none');
+    
+    // if user is logged out
   } else{
     // toggle UI elements
     loginElement.style.display = 'block';
